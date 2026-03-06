@@ -58,19 +58,20 @@ it('returns 401 for invalid login credentials', function () {
     ])->assertStatus(401);
 });
 
-it('logs out and deletes all tokens', function () {
+it('logs out and deletes current tokens', function () {
     $user = User::factory()->create([
         'username' => 'jdoe',
         'role' => 'cashier',
         'password' => Hash::make('secret123'),
     ]);
 
-    $user->createToken('auth_token');
+    $token1 = $user->createToken('auth_token')->plainTextToken;
+    $token2 = $user->createToken('auth_token')->plainTextToken;
 
-    $this->actingAs($user, 'sanctum')
+    $this->withHeader('Authorization', "Bearer $token1")
         ->postJson('/api/logout')
         ->assertOk()
         ->assertJson(['message' => 'Logged out successfully']);
 
-    expect($user->tokens()->count())->toBe(0);
+    expect($user->tokens()->count())->toBe(1);
 });

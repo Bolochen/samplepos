@@ -37,7 +37,7 @@ class AuthController extends Controller
         $request->validate([
             'username' => 'required',
             "name" => 'required',
-            "role" => 'required',
+            "role" => 'required|in:admin,cashier,waiter',
             'password' => 'required'
         ]);
 
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logged out successfully'
