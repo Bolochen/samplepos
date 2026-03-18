@@ -5,6 +5,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransactionItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,4 +31,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/shifts/open', [ShiftController::class, 'getOpenShiftByUser']);
     Route::apiResource('/shifts', ShiftController::class);
     Route::patch('/shifts/{id}/close', [ShiftController::class, 'closeShift']);
+
+    Route::post('/transactions/{id}/cancel', [TransactionController::class, 'cancel']);
+    Route::post('/transactions/{id}/split', [TransactionController::class, 'split']);
+    Route::get('/transactions/{id}/check', [TransactionController::class, 'check']);
+    Route::apiResource('transactions', TransactionController::class);
+    Route::apiResource('transactionItems', TransactionItemController::class);
 });

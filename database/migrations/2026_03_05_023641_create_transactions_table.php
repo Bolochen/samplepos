@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('notransaction')->unique();
             $table->foreignId('shift_id')->constrained('shifts', 'id')->onDelete('cascade');
-            $table->foreignId('table_id')->constrained('tables', 'id')->onDelete('cascade');
+            $table->foreignId('table_id')->nullable()->constrained('tables', 'id')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->date('date')->index();
             $table->decimal('subtotal', 15, 2)->default(0);
